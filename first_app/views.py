@@ -11,14 +11,20 @@ listOfItems = {
 
 
 # Start
-def edit(request):
-    return HttpResponse(listOfItems['edit'])
 
 
 def delete(request, id):
     instance = get_object_or_404(Note, id=id)
     instance.delete()
-    return render(request, 'dashboard.html')
+
+
+    q = Note.objects.all()
+
+    context = {
+        'txt': q,
+    }
+
+    return render(request, 'dashboard.html', context)
 
 
 def edit(request, id):
@@ -62,5 +68,10 @@ def save_edit(request, id):
     query.note_text = request.POST['note_input']
     query.save()
 
-    return render(request, 'dashboard.html')
+    q = Note.objects.all()
 
+    context = {
+        'txt': q,
+    }
+
+    return render(request, 'dashboard.html', context)
